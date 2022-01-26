@@ -1,0 +1,33 @@
+﻿<UserControl
+    x:Class="SecureFolderFS.WinUI.UserControls.NavigationControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:SecureFolderFS.WinUI.UserControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pg="using:SecureFolderFS.WinUI.Views"
+    xmlns:ts="using:SecureFolderFS.WinUI.TemplateSelectors"
+    xmlns:vc="using:SecureFolderFS.WinUI.ValueConverters"
+    xmlns:vm="using:SecureFolderFS.Backend.ViewModels.Pages"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="LoginPageDataTemplate" x:DataType="vm:VaultLoginPageViewModel">
+            <pg:VaultLoginPage ViewModel="{Binding}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="DashboardPageDataTemplate" x:DataType="vm:VaultDashboardPageViewModel">
+            <pg:VaultDashboardPage ViewModel="{Binding}" />
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <ContentControl
+        HorizontalContentAlignment="Stretch"
+        VerticalContentAlignment="Stretch"
+        Content="{x:Bind PageViewModel, Mode=OneWay}"
+        IsTabStop="False">
+        <ContentControl.ContentTemplateSelector>
+            <ts:PageNavigationTemplateSelector DashboardPageDataTemplate="{StaticResource DashboardPageDataTemplate}" LoginPageDataTemplate="{StaticResource LoginPageDataTemplate}" />
+        </ContentControl.ContentTemplateSelector>
+    </ContentControl>
+</UserControl>

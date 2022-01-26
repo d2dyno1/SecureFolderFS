@@ -1,9 +1,9 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Animation;
-using Microsoft.UI.Xaml.Navigation;
-using SecureFolderFS.Backend.Enums;
 using SecureFolderFS.Backend.Messages;
 using SecureFolderFS.Backend.Models;
 using SecureFolderFS.Backend.ViewModels.Pages;
@@ -19,29 +19,13 @@ namespace SecureFolderFS.WinUI.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class VaultDashboardPage : Page, IRecipient<DashboardNavigationRequestedMessage>
+    public sealed partial class VaultDashboardPage : Page, IRecipient<NavigationFinishedMessage>, IRecipient<DashboardNavigationRequestedMessage>
     {
-        public VaultDashboardPageViewModel ViewModel
-        {
-            get => (VaultDashboardPageViewModel)DataContext;
-            set => DataContext = value;
-        }
-
         public VaultDashboardPage()
         {
             this.InitializeComponent();
-        }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            if ((e.Parameter as PageNavigationParameterModel)?.ViewModel is VaultDashboardPageViewModel vaultDashboardPageViewModel)
-            {
-                ViewModel = vaultDashboardPageViewModel;
-
-                NavigatePage(ViewModel.BaseDashboardPageViewModel);
-            }
-
-            base.OnNavigatedTo(e);
+            WeakReferenceMessenger.Default.Register<NavigationFinishedMessage>(this);
         }
 
         public void Receive(DashboardNavigationRequestedMessage message)
@@ -56,6 +40,23 @@ namespace SecureFolderFS.WinUI.Views
                 case VaultMainDashboardPageViewModel:
                     ContentFrame.Navigate(typeof(VaultMainDashboardPage), new DashboardPageNavigationParameterModel() { ViewModel = baseDashboardPageViewModel }, new SlideNavigationTransitionInfo());
                     break;
+            }
+        }
+
+        public VaultDashboardPageViewModel ViewModel
+        {
+            get => (VaultDashboardPageViewModel)GetValue(ViewModelProperty);
+            set => SetValue(ViewModelProperty, value);
+        }
+        public static readonly DependencyProperty ViewModelProperty =
+            DependencyProperty.Register("ViewModel", typeof(VaultDashboardPageViewModel), typeof(VaultDashboardPage), new PropertyMetadata(null));
+
+        public void Receive(NavigationFinishedMessage message)
+        {
+            if (ViewModel != message.Value && message.Value is VaultDashboardPageViewModel vaultDashboardPageViewModel)
+            {
+                ViewModel = vaultDashboardPageViewModel;
+                this.Bindings.Update();
             }
         }
     }

@@ -1,8 +1,7 @@
 ﻿using Windows.System;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Navigation;
-using SecureFolderFS.Backend.Models;
 using SecureFolderFS.Backend.ViewModels.Pages;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -17,25 +16,9 @@ namespace SecureFolderFS.WinUI.Views
     /// </summary>
     public sealed partial class VaultLoginPage : Page
     {
-        public VaultLoginPageViewModel ViewModel
-        {
-            get => (VaultLoginPageViewModel)DataContext;
-            set => DataContext = value;
-        }
-
         public VaultLoginPage()
         {
             this.InitializeComponent();
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            if ((e.Parameter as PageNavigationParameterModel)?.ViewModel is VaultLoginPageViewModel vaultLoginPageViewModel)
-            {
-                ViewModel = vaultLoginPageViewModel;
-            }
-
-            base.OnNavigatedTo(e);
         }
 
         private void VaultPasswordBox_KeyUp(object sender, KeyRoutedEventArgs e)
@@ -45,5 +28,13 @@ namespace SecureFolderFS.WinUI.Views
                 ViewModel.UnlockVaultCommand.Execute((sender as PasswordBox)!.Password);
             }
         }
+
+        public VaultLoginPageViewModel ViewModel
+        {
+            get => (VaultLoginPageViewModel)GetValue(ViewModelProperty);
+            set => SetValue(ViewModelProperty, value);
+        }
+        public static readonly DependencyProperty ViewModelProperty =
+            DependencyProperty.Register("ViewModel", typeof(VaultLoginPageViewModel), typeof(VaultLoginPage), new PropertyMetadata(null));
     }
 }

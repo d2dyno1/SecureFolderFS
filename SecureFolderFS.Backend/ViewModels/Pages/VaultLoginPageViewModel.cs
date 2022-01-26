@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using SecureFolderFS.Backend.Messages;
 using SecureFolderFS.Backend.Models;
 using SecureFolderFS.Core.PasswordRequest;
 using SecureFolderFS.Core.Routines;
@@ -15,8 +17,6 @@ namespace SecureFolderFS.Backend.ViewModels.Pages
 {
     public sealed class VaultLoginPageViewModel : BasePageViewModel
     {
-        public NavigationModel NavigationModel { get; }
-
         private string? _VaultName;
         public string? VaultName
         {
@@ -26,10 +26,9 @@ namespace SecureFolderFS.Backend.ViewModels.Pages
 
         public IRelayCommand<string> UnlockVaultCommand { get; }
 
-        public VaultLoginPageViewModel(VaultModel vaultModel, NavigationModel navigationModel)
+        public VaultLoginPageViewModel(VaultModel vaultModel)
             : base(vaultModel)
         {
-            this.NavigationModel = navigationModel;
             this._VaultName = vaultModel.VaultName;
 
             this.UnlockVaultCommand = new RelayCommand<string?>(UnlockVault);
@@ -40,7 +39,7 @@ namespace SecureFolderFS.Backend.ViewModels.Pages
             if (string.IsNullOrEmpty(password))
             {
                 // TODO: Please provide password
-                NavigationModel.NavigateToPage(VaultModel, new VaultDashboardPageViewModel(VaultModel));
+                WeakReferenceMessenger.Default.Send(new NavigationRequestedMessage(VaultModel, new VaultDashboardPageViewModel(VaultModel)));
             }
             else
             {
