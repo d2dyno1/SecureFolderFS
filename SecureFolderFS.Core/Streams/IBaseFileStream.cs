@@ -23,6 +23,8 @@ namespace SecureFolderFS.Core.Streams
 
         int Read([In, Out] byte[] array, int offset, int count);
 
+        int Read(Span<byte> buffer);
+
         void Write(byte[] array, int offset, int count);
 
         void Lock(long position, long length);

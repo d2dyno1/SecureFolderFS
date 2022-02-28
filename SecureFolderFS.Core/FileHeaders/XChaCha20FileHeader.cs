@@ -1,4 +1,5 @@
 ﻿using SecureFolderFS.Core.Extensions;
+using System;
 
 namespace SecureFolderFS.Core.FileHeaders
 {
@@ -12,7 +13,7 @@ namespace SecureFolderFS.Core.FileHeaders
 
         public const int HEADER_SIZE = HEADER_NONCE_SIZE + HEADER_CONTENTKEY_SIZE + HEADER_TAG_SIZE;
 
-        public XChaCha20FileHeader(byte[] nonce, byte[] contentKey)
+        public XChaCha20FileHeader(ReadOnlyMemory<byte> nonce, ReadOnlyMemory<byte> contentKey)
             : base(nonce, contentKey)
         {
         }

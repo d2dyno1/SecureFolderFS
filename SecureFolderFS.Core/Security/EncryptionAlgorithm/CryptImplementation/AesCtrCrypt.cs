@@ -8,7 +8,7 @@ namespace SecureFolderFS.Core.Security.EncryptionAlgorithm.CryptImplementation
     {
         private bool _disposed;
 
-        public byte[] AesCtrEncrypt(byte[] bytes, byte[] key, byte[] iv)
+        public Span<byte> AesCtrEncrypt(byte[] bytes, byte[] key, byte[] iv)
         {
             AssertNotDisposed();
 
@@ -20,7 +20,7 @@ namespace SecureFolderFS.Core.Security.EncryptionAlgorithm.CryptImplementation
             return encryptor.TransformFinalBlock(bytes, 0, bytes.Length);
         }
 
-        public byte[] AesCtrDecrypt(byte[] bytes, byte[] key, byte[] iv)
+        public Span<byte> AesCtrDecrypt(byte[] bytes, byte[] key, byte[] iv)
         {
             AssertNotDisposed();
 

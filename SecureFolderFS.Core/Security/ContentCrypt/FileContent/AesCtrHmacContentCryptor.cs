@@ -34,11 +34,11 @@ namespace SecureFolderFS.Core.Security.ContentCrypt.FileContent
             secureRandom.GetBytes(chunkNonce);
 
             // Payload
-            var ciphertextPayload = keyCryptor.AesCtrCrypt.AesCtrEncrypt(cleartextChunk.ToArray(), fileHeader.ContentKey, chunkNonce);
+            var ciphertextPayload = keyCryptor.AesCtrCrypt.AesCtrEncrypt(cleartextChunk.AsSpan().ToArray(), fileHeader.ContentKey.ToArray(), chunkNonce);
 
             // Calculate MAC
             var chunkMac = CalculateChunkMac(
-                fileHeaderNonce: fileHeader.Nonce,
+                fileHeaderNonce: fileHeader.Nonce.Span,
                 chunkNumber: chunkNumber,
                 chunkNonce: chunkNonce,
                 ciphertextPayload: ciphertextPayload);
@@ -73,20 +73,20 @@ namespace SecureFolderFS.Core.Security.ContentCrypt.FileContent
                 chunkNonce: ciphertextAesCtrHmacChunk.Nonce,
                 ciphertextPayload: ciphertextAesCtrHmacChunk.Payload);
 
-            return realMac.SequenceEqual(ciphertextAesCtrHmacChunk.Auth);
+            return realMac.SequenceEqual(ciphertextAesCtrHmacChunk.Auth.Span);
         }
 
-        private byte[] CalculateChunkMac(byte[] fileHeaderNonce, long chunkNumber, byte[] chunkNonce, byte[] ciphertextPayload)
+        private ReadOnlySpan<byte> CalculateChunkMac(ReadOnlySpan<byte> fileHeaderNonce, long chunkNumber, ReadOnlySpan<byte> chunkNonce, ReadOnlySpan<byte> ciphertextPayload)
         {
             using var macKey = _masterKey.CreateMacKeyCopy();
             var beChunkNumber = BitConverter.GetBytes(chunkNumber).AsBigEndian();
 
             using var hmacSha256Crypt = keyCryptor.HmacSha256Crypt.GetInstance(macKey);
             hmacSha256Crypt.InitializeHMAC();
-            hmacSha256Crypt.Update(fileHeaderNonce);
+            hmacSha256Crypt.Update(fileHeaderNonce.ToArray());
             hmacSha256Crypt.Update(beChunkNumber);
-            hmacSha256Crypt.Update(chunkNonce);
-            hmacSha256Crypt.DoFinal(ciphertextPayload);
+            hmacSha256Crypt.Update(chunkNonce.ToArray());
+            hmacSha256Crypt.DoFinal(ciphertextPayload.ToArray());
 
             return hmacSha256Crypt.GetHash();
         }

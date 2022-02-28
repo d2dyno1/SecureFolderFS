@@ -38,11 +38,11 @@ namespace SecureFolderFS.Core.Chunks.IO
             var chunkSize = _security.ContentCryptor.FileContentCryptor.ChunkFullCiphertextSize;
 
             var ciphertextPosition = _security.ContentCryptor.FileHeaderCryptor.HeaderSize + (chunkNumber * chunkSize);
-            var ciphertextBuffer = new byte[chunkSize];
+            var ciphertextBuffer = new Memory<byte>(new byte[chunkSize]);
 
             var ciphertextFileStream = _ciphertextStreamsManager.EnsureReadOnlyStreamInstance();
             ciphertextFileStream.Position = ciphertextPosition;
-            var read = ciphertextFileStream.Read(ciphertextBuffer, 0, ciphertextBuffer.Length);
+            var read = ciphertextFileStream.Read(ciphertextBuffer.Span);
 
             if (read == Constants.IO.FILE_EOF)
             {
@@ -51,8 +51,8 @@ namespace SecureFolderFS.Core.Chunks.IO
 
             _fileSystemStatsTracker?.AddBytesRead(read);
 
-            var actualCiphertextBuffer = new byte[read];
-            actualCiphertextBuffer.EmplaceArrays(ciphertextBuffer);
+            //var actualCiphertextBuffer = new byte[read];
+            //actualCiphertextBuffer.EmplaceArrays(ciphertextBuffer);
 
             var cleartextChunk = _security.ContentCryptor.FileContentCryptor.DecryptChunk(
                 _chunkFactory.FromCiphertextChunkBuffer(actualCiphertextBuffer),

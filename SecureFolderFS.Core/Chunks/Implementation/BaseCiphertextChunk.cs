@@ -1,36 +1,27 @@
 ﻿using System;
-using SecureFolderFS.Core.Extensions;
 
 namespace SecureFolderFS.Core.Chunks.Implementation
 {
     internal abstract class BaseCiphertextChunk : ICiphertextChunk
     {
-        public byte[] Nonce { get; }
+        protected ReadOnlyMemory<byte> WholeChunk { get; set; }
 
-        public byte[] Payload { get; }
+        public ReadOnlyMemory<byte> Nonce { get; protected set; }
 
-        public byte[] Auth { get; }
+        public ReadOnlyMemory<byte> Payload { get; protected set; }
 
-        protected BaseCiphertextChunk(byte[] nonce, byte[] payload, byte[] auth)
+        public ReadOnlyMemory<byte> Auth { get; protected set; }
+
+        protected BaseCiphertextChunk(ReadOnlyMemory<byte> ciphertextChunkBuffer)
         {
-            this.Nonce = nonce;
-            this.Payload = payload;
-            this.Auth = auth;
+            WithCiphertextChunkBuffer(ciphertextChunkBuffer);
         }
 
-        public virtual byte[] ToArray()
+        public virtual ReadOnlyMemory<byte> ToArray()
         {
-            var fullChunk = new byte[Nonce.Length + Payload.Length + Auth.Length];
-            fullChunk.EmplaceArrays(Nonce, Payload, Auth);
-
-            return fullChunk;
+            return WholeChunk;
         }
 
-        public virtual void Dispose()
-        {
-            Array.Clear(Nonce);
-            Array.Clear(Payload);
-            Array.Clear(Auth);
-        }
+        protected abstract void WithCiphertextChunkBuffer(ReadOnlyMemory<byte> ciphertextChunkBuffer);
     }
 }

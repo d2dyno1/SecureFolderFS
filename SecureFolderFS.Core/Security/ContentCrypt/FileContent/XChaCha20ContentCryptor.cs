@@ -32,7 +32,7 @@ namespace SecureFolderFS.Core.Security.ContentCrypt.FileContent
 
             // Payload
             var ciphertextPayload = keyCryptor.XChaCha20Poly1305Crypt.XChaCha20Poly1305Encrypt(
-                cleartextChunk.ToArray(),
+                cleartextChunk.AsSpan(),
                 fileHeader.ContentKey,
                 chunkNonce,
                 out var tag,

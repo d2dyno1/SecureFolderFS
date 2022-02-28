@@ -44,7 +44,6 @@ namespace SecureFolderFS.Core.Chunks.Receivers
                 var chunkNumberToRemove = _chunks.Keys.First();
                 base.SetChunk(chunkNumberToRemove, _chunks[chunkNumberToRemove]);
 
-                _chunks[chunkNumberToRemove].Dispose();
                 _chunks.Remove(chunkNumberToRemove);
             }
 
@@ -58,8 +57,8 @@ namespace SecureFolderFS.Core.Chunks.Receivers
             foreach (var chunk in _chunks)
             {
                 chunkWriter.WriteChunk(chunk.Key, chunk.Value);
-                chunk.Value.Dispose();
             }
+
             _chunks.Clear();
         }
 
@@ -67,7 +66,6 @@ namespace SecureFolderFS.Core.Chunks.Receivers
         {
             base.Dispose();
 
-            _chunks.Values.DisposeCollection();
             _chunks.Clear();
         }
     }

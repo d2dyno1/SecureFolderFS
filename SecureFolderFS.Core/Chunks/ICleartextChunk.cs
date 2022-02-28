@@ -3,7 +3,7 @@ using System.IO;
 
 namespace SecureFolderFS.Core.Chunks
 {
-    internal interface ICleartextChunk : IDisposable
+    internal interface ICleartextChunk
     {
         int ActualLength { get; }
 
@@ -15,6 +15,6 @@ namespace SecureFolderFS.Core.Chunks
 
         void SetActualLength(int length);
 
-        byte[] ToArray();
+        ReadOnlySpan<byte> AsSpan();
     }
 }

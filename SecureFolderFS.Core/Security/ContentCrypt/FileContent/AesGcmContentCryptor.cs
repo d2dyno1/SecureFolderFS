@@ -36,7 +36,7 @@ namespace SecureFolderFS.Core.Security.ContentCrypt.FileContent
 
             // Payload
             var ciphertextPayload = keyCryptor.AesGcmCrypt.AesGcmEncrypt(
-                cleartextChunk.ToArray(),
+                cleartextChunk.AsSpan(),
                 fileHeader.ContentKey,
                 chunkNonce,
                 out var tag,

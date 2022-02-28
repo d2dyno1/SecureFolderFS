@@ -4,20 +4,14 @@ namespace SecureFolderFS.Core.FileHeaders
 {
     internal abstract class BaseFileHeader : IFileHeader
     {
-        public byte[] Nonce { get; }
+        public ReadOnlyMemory<byte> Nonce { get; }
 
-        public byte[] ContentKey { get; } // TODO: SecretKey here?
+        public ReadOnlyMemory<byte> ContentKey { get; }
 
-        protected BaseFileHeader(byte[] nonce, byte[] contentKey)
+        protected BaseFileHeader(ReadOnlyMemory<byte> nonce, ReadOnlyMemory<byte> contentKey)
         {
             this.Nonce = nonce;
             this.ContentKey = contentKey;
-        }
-
-        public virtual void Dispose()
-        {
-            Array.Clear(Nonce);
-            Array.Clear(ContentKey);
         }
     }
 }

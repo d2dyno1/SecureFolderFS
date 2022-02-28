@@ -10,22 +10,18 @@ namespace SecureFolderFS.Core.Chunks.Implementation
 
         public const int CHUNK_FULL_CIPHERTEXT_SIZE = CHUNK_NONCE_SIZE + CleartextAesCtrHmacChunk.CHUNK_CLEARTEXT_SIZE + CHUNK_MAC_SIZE;
 
-        private CiphertextAesCtrHmacChunk(byte[] nonce, byte[] payload, byte[] auth)
-            : base(nonce, payload, auth)
+        public CiphertextAesCtrHmacChunk(ReadOnlyMemory<byte> ciphertextChunkBuffer)
+            : base(ciphertextChunkBuffer)
         {
         }
 
-        public static CiphertextAesCtrHmacChunk FromCiphertextChunkBuffer(byte[] ciphertextChunkBuffer)
+        protected override void WithCiphertextChunkBuffer(ReadOnlyMemory<byte> ciphertextChunkBuffer)
         {
-            var nonce = new byte[CHUNK_NONCE_SIZE];
-            var payload = new byte[ciphertextChunkBuffer.Length - (CHUNK_NONCE_SIZE + CHUNK_MAC_SIZE)];
-            var mac = new byte[CHUNK_MAC_SIZE];
+            WholeChunk = ciphertextChunkBuffer;
 
-            Array.Copy(ciphertextChunkBuffer, 0, nonce, 0, CHUNK_NONCE_SIZE);
-            Array.Copy(ciphertextChunkBuffer, CHUNK_NONCE_SIZE, payload, 0, payload.Length);
-            Array.Copy(ciphertextChunkBuffer, CHUNK_NONCE_SIZE + payload.Length, mac, 0, CHUNK_MAC_SIZE);
-
-            return new CiphertextAesCtrHmacChunk(nonce, payload, mac);
+            Nonce = WholeChunk.Slice(0, CHUNK_NONCE_SIZE);
+            Payload = WholeChunk.Slice(CHUNK_NONCE_SIZE, WholeChunk.Length - (CHUNK_NONCE_SIZE + CHUNK_MAC_SIZE));
+            Auth = WholeChunk.Slice(CHUNK_NONCE_SIZE + Payload.Length, CHUNK_MAC_SIZE);
         }
     }
 }

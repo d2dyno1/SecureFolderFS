@@ -38,7 +38,7 @@ namespace SecureFolderFS.Core.Chunks.IO
                         chunkNumber,
                         _fileHeader);
 
-                byte[] ciphertextChunkBuffer = ciphertextChunk.ToArray();
+                var ciphertextChunkBuffer = ciphertextChunk.ToArray();
 
                 _fileSystemStatsTracker?.AddBytesEncrypted(cleartextChunk.ActualLength);
 
