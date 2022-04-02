@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecureFolderFS.Backend", "S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecureFolderFS.Core", "SecureFolderFS.Core\SecureFolderFS.Core.csproj", "{1B9044F7-7332-4803-8F9F-5ED6B056DBD4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SecureFolderFS.API", "SecureFolderFS.API", "{222A778D-A40A-4CA7-AD46-0CE6D898812E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{CF1D02FA-B9CF-4920-884B-4D30545BC2F3} = {66BC1E2B-D99A-49E2-8B8F-EF7851493CB0}
 		{3EDA3EAD-176F-4E00-B3D5-966E684E0C9E} = {66BC1E2B-D99A-49E2-8B8F-EF7851493CB0}
+		{1B9044F7-7332-4803-8F9F-5ED6B056DBD4} = {222A778D-A40A-4CA7-AD46-0CE6D898812E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A1906FD8-BB54-4688-BC0F-9ED7532D2CB0}
