@@ -1,7 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.IO;
-using SecureFolderFS.Core.Extensions;
+using SecureFolderFS.Shared.Extensions;
+using SecureFolderFS.Core.Helpers;
 
 namespace SecureFolderFS.Core.VaultDataStore.VaultKeystore
 {

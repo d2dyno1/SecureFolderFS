@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using SecureFolderFS.Backend.Services;
 
-namespace SecureFolderFS.Backend.Extensions
+namespace SecureFolderFS.Backend.Helpers
 {
-    public static class LocalizationExtensions
+    public static class LocalizationHelpers
     {
         private static ILocalizationService? FallbackLocalizationService;
 
