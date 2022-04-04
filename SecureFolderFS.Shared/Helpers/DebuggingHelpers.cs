@@ -7,13 +7,7 @@ namespace SecureFolderFS.Shared.Helpers
     {
         public static void PrintEnumerable(IEnumerable enumerable)
         {
-#if !DEBUG
-            return;
-#endif
-            if (!Constants.ENABLE_DEBUG_LOGGING)
-            {
-                return;
-            }
+            if (!CanLog()) return;
 
             foreach (var item in enumerable)
             {
@@ -23,13 +17,7 @@ namespace SecureFolderFS.Shared.Helpers
 
         public static void PrintEnumerableInline(IEnumerable enumerable)
         {
-#if !DEBUG
-            return;
-#endif
-            if (!Constants.ENABLE_DEBUG_LOGGING)
-            {
-                return;
-            }
+            if (!CanLog()) return;
 
             foreach (var item in enumerable)
             {
@@ -39,13 +27,7 @@ namespace SecureFolderFS.Shared.Helpers
 
         public static T OutputToDebugAndContinue<T>(this T target, string message)
         {
-#if !DEBUG
-            return;
-#endif
-            if (!Constants.ENABLE_DEBUG_LOGGING)
-            {
-                return target;
-            }
+            if (!CanLog()) return target;
 
             Debug.WriteLine(message);
 
@@ -54,17 +36,20 @@ namespace SecureFolderFS.Shared.Helpers
 
         public static void OutputToDebug(string message)
         {
-#if !DEBUG
-            return;
-#endif
-            if (!Constants.ENABLE_DEBUG_LOGGING)
-            {
-                return;
-            }
+            if (!CanLog()) return;
 
             Debug.WriteLine(message);
 
             return;
+        }
+
+        private static bool CanLog()
+        {
+#if !DEBUG
+            return false;
+#endif
+
+            return Constants.ENABLE_DEBUG_LOGGING;
         }
     }
 }
