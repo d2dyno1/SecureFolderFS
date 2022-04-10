@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.AccessControl;
 
-namespace SecureFolderFS.Core.FileSystem.FileSystemAdapter.Dokan.Callback
+namespace SecureFolderFS.Dokany.FileSystem.Callback
 {
     internal interface ICreateFileCallback : IDisposable
     {

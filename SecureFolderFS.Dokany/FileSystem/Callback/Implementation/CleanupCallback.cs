@@ -3,7 +3,7 @@ using SecureFolderFS.Core.Paths;
 using SecureFolderFS.Core.FileSystem.OpenHandles;
 using SecureFolderFS.Core.FileSystem.Operations;
 
-namespace SecureFolderFS.Core.FileSystem.FileSystemAdapter.Dokan.Callback.Implementation
+namespace SecureFolderFS.Dokany.FileSystem.FileSystemAdapter.Dokan.Callback.Implementation
 {
     internal sealed class CleanupCallback : BaseDokanOperationsCallbackWithPath, ICleanupCallback
     {

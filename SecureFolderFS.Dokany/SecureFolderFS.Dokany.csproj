@@ -15,8 +15,4 @@
     <ProjectReference Include="..\SecureFolderFS.Shared\SecureFolderFS.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="FileSystem\Callback\Implementation\" />
-  </ItemGroup>
-
 </Project>

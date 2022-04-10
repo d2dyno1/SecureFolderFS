@@ -22,4 +22,8 @@
     <ProjectReference Include="..\SecureFolderFS.Shared\SecureFolderFS.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="FileSystem\FileSystemAdapter\Dokan\Callback\Implementation\" />
+  </ItemGroup>
+
 </Project>

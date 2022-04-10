@@ -11,11 +11,11 @@ namespace SecureFolderFS.Dokany.FileSystem
 {
     internal sealed class DokanyFileSystemAdapter : IFileSystemAdapter
     {
-        private readonly DokanFileSystemIntrinsics _fileSystemIntrinsics;
+        private readonly DokanFileSystemAdapterInternal _fileSystemIntrinsics;
 
         private DokanInstance? _dokanInstance;
 
-        public DokanyFileSystemAdapter(DokanFileSystemIntrinsics fileSystemIntrinsics)
+        public DokanyFileSystemAdapter(DokanFileSystemAdapterInternal fileSystemIntrinsics)
         {
             _fileSystemIntrinsics = fileSystemIntrinsics;
         }
